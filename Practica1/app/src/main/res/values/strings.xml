@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Practica1</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+</resources>
