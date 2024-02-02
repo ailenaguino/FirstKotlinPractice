@@ -16,5 +16,7 @@
     <string name="title_overweight">Overweight</string>
     <string name="title_obesity">Obesity</string>
     <string name="description">At vero eos et accusam et justo duo dolores et ea rebum</string>
+    <string name="to_do">to do</string>
+    <string name="category">category</string>
 
 </resources>
