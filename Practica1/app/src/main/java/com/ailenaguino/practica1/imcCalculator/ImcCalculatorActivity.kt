@@ -1,5 +1,6 @@
 package com.ailenaguino.practica1.imcCalculator
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +11,6 @@ import androidx.core.content.ContextCompat
 import com.ailenaguino.practica1.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.slider.RangeSlider
-import org.w3c.dom.Text
 import java.text.DecimalFormat
 
 class ImcCalculatorActivity : AppCompatActivity() {
@@ -32,6 +32,10 @@ class ImcCalculatorActivity : AppCompatActivity() {
     private lateinit var btnAddWeight: FloatingActionButton
     private lateinit var tvWeight: TextView
     private lateinit var btnCalculate: Button
+
+    companion object {
+        const val IMC_KEY = "IMC_RESULT"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,7 +87,15 @@ class ImcCalculatorActivity : AppCompatActivity() {
             setWeight()
         }
 
-        btnCalculate.setOnClickListener { calculateIMC() }
+        btnCalculate.setOnClickListener {
+            navigateToResult(calculateIMC())
+        }
+    }
+
+    private fun navigateToResult(result: Double) {
+        val intent = Intent(this, ResultIMCActivity::class.java)
+        intent.putExtra(IMC_KEY, result)
+        startActivity(intent)
     }
 
     private fun initComponents() {
@@ -122,9 +134,11 @@ class ImcCalculatorActivity : AppCompatActivity() {
         tvWeight.text = currentWeight.toString()
     }
 
-    private fun calculateIMC() {
+    private fun calculateIMC(): Double {
+        val df = DecimalFormat("#.##")
         val imc = currentWeight/(currentHeight.toDouble()/100 * currentHeight.toDouble()/100)
         Log.i("IMC", "$imc")
+        return df.format(imc).toDouble()
     }
 
 }
