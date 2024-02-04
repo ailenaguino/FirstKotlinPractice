@@ -27,4 +27,11 @@
         android:textColor="@color/todo_subtitle_text"
         android:layout_marginHorizontal="32dp"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
 </LinearLayout>
