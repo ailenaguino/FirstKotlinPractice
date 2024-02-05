@@ -27,4 +27,9 @@
         <item name="android:statusBarColor">@color/todo_background_todo_app</item>
         <!-- Customize your theme here. -->
     </style>
+    
+    <style name="TodoSubtitle">
+        <item name="android:textColor">@color/todo_subtitle_text</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
 </resources>

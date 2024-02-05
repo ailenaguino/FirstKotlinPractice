@@ -18,5 +18,10 @@
     <string name="description">At vero eos et accusam et justo duo dolores et ea rebum</string>
     <string name="to_do">to do</string>
     <string name="category">category</string>
+    <string name="tasks">tasks</string>
+    <string name="add_your_task">Add your task</string>
+    <string name="business">Business</string>
+    <string name="personal">Personal</string>
+    <string name="other">Other</string>
 
 </resources>
