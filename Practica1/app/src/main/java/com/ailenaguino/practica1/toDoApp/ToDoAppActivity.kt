@@ -79,11 +79,11 @@ class ToDoAppActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
-        categoryAdapter = CategoryAdapter(categories)
+        categoryAdapter = CategoryAdapter(categories) { updateCategories(it) }
         rvCategory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvCategory.adapter = categoryAdapter
 
-        tasksAdapter = TasksAdapter(tasks) {position -> onItemSelected(position)}
+        tasksAdapter = TasksAdapter(tasks) { position -> onItemSelected(position) }
         rvTasks.layoutManager = LinearLayoutManager(this) //no se pone lo demas porque es vertical
         rvTasks.adapter = tasksAdapter
     }
@@ -94,11 +94,21 @@ class ToDoAppActivity : AppCompatActivity() {
         fabAddTask = findViewById(R.id.fabAddTask)
     }
 
-    private fun onItemSelected(position:Int){
+    private fun onItemSelected(position: Int) {
         tasks[position].isSelected = !tasks[position].isSelected
         updateTasks()
     }
+
+    private fun updateCategories(position: Int) {
+        categories[position].isSelected = !categories[position].isSelected
+        categoryAdapter.notifyItemChanged(position)
+        updateTasks()
+    }
+
     private fun updateTasks() {
+        val selectedCategories: List<TaskCategory> = categories.filter { it.isSelected }
+        val newTasks = tasks.filter {selectedCategories.contains(it.category)}
+        tasksAdapter.tasks = newTasks
         tasksAdapter.notifyDataSetChanged()
     }
 }
