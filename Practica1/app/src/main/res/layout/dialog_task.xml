@@ -3,7 +3,8 @@
     android:layout_width="250dp"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/todo_background_todo_app">
+    android:background="@color/todo_background_todo_app"
+    android:padding="16dp">
 
     <EditText
         android:id="@+id/etTask"
@@ -46,5 +47,11 @@
 
     </RadioGroup>
 
+    <Button
+        android:id="@+id/btnAddTask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/todo_accent"
+        android:text="@string/add_task"/>
 
 </LinearLayout>
