@@ -2,10 +2,16 @@ package com.ailenaguino.practica1.superheroApp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.SearchView
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ailenaguino.practica1.R
 import com.ailenaguino.practica1.databinding.ActivitySuperheroListBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -13,6 +19,8 @@ class SuperheroListActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySuperheroListBinding
     private lateinit var retrofit: Retrofit
+
+    private lateinit var adapter: SuperheroAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,10 +39,29 @@ class SuperheroListActivity : AppCompatActivity() {
 
             override fun onQueryTextChange(p0: String?) = false
         })
+
+        adapter = SuperheroAdapter()
+        binding.rvSuperhero.setHasFixedSize(true)
+        binding.rvSuperhero.layoutManager = LinearLayoutManager(this)
+        binding.rvSuperhero.adapter = adapter
     }
 
     private fun searchByName(query: String) {
-
+        binding.progressbar.isVisible = true
+        CoroutineScope(Dispatchers.IO).launch {
+            val myResponse = retrofit.create(ApiService::class.java).getSuperheros(query)
+            if (myResponse.isSuccessful) {
+                Log.i("Superhero", "It works")
+                val shDataResponse: SuperheroDataResponse? = myResponse.body()
+                if (shDataResponse != null) {
+                    runOnUiThread {
+                        binding.progressbar.isVisible = false
+                    }
+                }
+            } else {
+                Log.i("Superhero", "It doesn't work")
+            }
+        }
     }
 
     private fun getRetrofit(): Retrofit {
