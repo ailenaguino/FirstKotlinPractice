@@ -1,5 +1,6 @@
 package com.ailenaguino.practica1.superheroApp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ailenaguino.practica1.R
 import com.ailenaguino.practica1.databinding.ActivitySuperheroListBinding
+import com.ailenaguino.practica1.superheroApp.DetailSuperheroActivity.Companion.EXTRA_ID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -40,7 +42,7 @@ class SuperheroListActivity : AppCompatActivity() {
             override fun onQueryTextChange(p0: String?) = false
         })
 
-        adapter = SuperheroAdapter()
+        adapter = SuperheroAdapter() {navigateToDetail(it)}
         binding.rvSuperhero.setHasFixedSize(true)
         binding.rvSuperhero.layoutManager = LinearLayoutManager(this)
         binding.rvSuperhero.adapter = adapter
@@ -51,10 +53,10 @@ class SuperheroListActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             val myResponse = retrofit.create(ApiService::class.java).getSuperheros(query)
             if (myResponse.isSuccessful) {
-                Log.i("Superhero", "It works")
                 val shDataResponse: SuperheroDataResponse? = myResponse.body()
                 if (shDataResponse != null) {
                     runOnUiThread {
+                        adapter.updateList(shDataResponse.superheros)
                         binding.progressbar.isVisible = false
                     }
                 }
@@ -70,5 +72,11 @@ class SuperheroListActivity : AppCompatActivity() {
             .baseUrl("https://superheroapi.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+    }
+
+    private fun navigateToDetail(id: String){
+        val intent = Intent(this, DetailSuperheroActivity::class.java)
+        intent.putExtra(EXTRA_ID, id)
+        startActivity(intent)
     }
 }
