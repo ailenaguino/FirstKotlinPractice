@@ -32,4 +32,5 @@
         <item name="android:textColor">@color/todo_subtitle_text</item>
         <item name="android:textAllCaps">true</item>
     </style>
+
 </resources>
